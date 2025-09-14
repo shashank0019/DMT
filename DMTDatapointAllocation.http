@@ -1,0 +1,6 @@
+@DMTDatapointAllocation_HostAddress = http://localhost:5079
+
+GET {{DMTDatapointAllocation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,41 @@
+# .gitignore for DMTDatapointAllocation (C# .NET project)
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+.vs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Others
+*.vspscc
+*.vssscc
+*.ncb
+*.sdf
+*.opensdf
+*.cache
+*.pdb
+*.dbmdl
+*.bak
+*.swp
+*.tmp
+*.ide
+
+# Rider
+.idea/
+*.sln.iml
