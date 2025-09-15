@@ -32,15 +32,12 @@ namespace DMTDatapointAllocation.Controllers
         }
 
         [HttpGet("budget")]
-        public async Task<IActionResult> GetBudget([FromQuery] int teamId, [FromQuery] int quarterId)
+        public async Task<IActionResult> GetBudget()
         {
-            if (teamId <= 0 || quarterId <= 0)
-                return BadRequest("Invalid teamId or quarterId");
-
-            var budget = await _biz.GetBudgetAsync(teamId, quarterId);
-            if (budget == null) return NotFound();
-            return Ok(budget);
+            var budgets = await _biz.GetBudgetAsync();
+            return Ok(budgets);
         }
+
 
         [HttpPost("allocate")]
         public async Task<IActionResult> Allocate([FromBody] AllocationRequest request)

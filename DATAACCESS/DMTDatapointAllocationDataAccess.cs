@@ -33,7 +33,7 @@ namespace DMTDatapointAllocation.DATAACCESS
                         result.Add(new TeamDto
                         {
                             TeamId = rdr.GetInt32(rdr.GetOrdinal("TeamID")),
-                            TeamName = rdr.GetString(rdr.GetOrdinal("TeamName"))
+                            TeamName = rdr.GetString(rdr.GetOrdinal("Team"))
                         });
                     }
                 }
@@ -57,8 +57,8 @@ namespace DMTDatapointAllocation.DATAACCESS
                     {
                         result.Add(new QuarterDto
                         {
-                            QuarterId = rdr.GetInt32(rdr.GetOrdinal("QuarterID")),
-                            QuarterName = rdr.GetString(rdr.GetOrdinal("QuarterName"))
+                            QuarterId = rdr.GetInt32(rdr.GetOrdinal("QID")),
+                            QuarterName = rdr.GetString(rdr.GetOrdinal("Quarter"))
                         });
                     }
                 }
@@ -70,32 +70,33 @@ namespace DMTDatapointAllocation.DATAACCESS
         /// <summary>
         /// Gets budget for the selected team+quarter. Adjust returned fields per your SP.
         /// </summary>
-        public async Task<BudgetDto> GetBudgetAsync(int teamId, int quarterId)
+        public async Task<List<BudgetDto>> GetBudgetAsync()
         {
+            var result = new List<BudgetDto>();
+
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand("DMTDatapointAllocation_GetBudget", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@TeamID", teamId);
-                cmd.Parameters.AddWithValue("@QID", quarterId);
-
                 await conn.OpenAsync();
+
                 using (var rdr = await cmd.ExecuteReaderAsync())
                 {
-                    if (await rdr.ReadAsync())
+                    while (await rdr.ReadAsync())
                     {
-                        return new BudgetDto
+                        result.Add(new BudgetDto
                         {
-                            BudgetId = rdr.GetInt32(rdr.GetOrdinal("BudgetID")),
-                            Amount = rdr.GetDecimal(rdr.GetOrdinal("Amount")),
-                            Notes = rdr.IsDBNull(rdr.GetOrdinal("Notes")) ? null : rdr.GetString(rdr.GetOrdinal("Notes"))
-                        };
+                            BudgetId = rdr.GetInt32(rdr.GetOrdinal("BID")),
+                            BudgetName = rdr.GetString(rdr.GetOrdinal("Budget"))
+                        });
                     }
                 }
             }
 
-            return null;
+            return result;
         }
+
+
 
         /// <summary>
         /// Insert or update allocation. Returns RID (master id) produced by SP.

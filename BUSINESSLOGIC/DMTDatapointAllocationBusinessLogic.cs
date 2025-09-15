@@ -24,10 +24,11 @@ namespace DMTDatapointAllocation.BUSINESSLOGIC
             return _dataAccess.GetQuartersAsync();
         }
 
-        public Task<BudgetDto> GetBudgetAsync(int teamId, int quarterId)
+        public Task<List<BudgetDto>> GetBudgetAsync()
         {
-            return _dataAccess.GetBudgetAsync(teamId, quarterId);
+            return _dataAccess.GetBudgetAsync();
         }
+
 
         public async Task<AllocationResponse> InsertOrUpdateAsync(AllocationRequest request)
         {

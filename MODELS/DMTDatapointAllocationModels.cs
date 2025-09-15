@@ -20,8 +20,8 @@ namespace DMTDatapointAllocation.Models
     public class BudgetDto
     {
         public int BudgetId { get; set; }
-        public decimal Amount { get; set; }
-        public string Notes { get; set; }
+        public string BudgetName { get; set; }
+      
     }
 
     // Request to insert/update allocation
