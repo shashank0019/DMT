@@ -137,37 +137,47 @@ namespace DMTDatapointAllocation.DATAACCESS
         /// <summary>
         /// Get master data for subsequent forms (choice=1, RID)
         /// </summary>
-        public async Task<MasterDataDto> GetMasterDataAsync(int rid)
+        public async Task<List<MasterDataDto>> GetMasterDataAsync(int choice, int rid)
         {
-            using (var conn = new SqlConnection(_connectionString))
-            using (var cmd = new SqlCommand("DMTDatapointAllocation_GetMasterData", conn))
+            var results = new List<MasterDataDto>();
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlCommand cmd = new SqlCommand("DMTDatapointAllocation_GetMasterData", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Choice", 1);
+                cmd.Parameters.AddWithValue("@Choice", choice);
                 cmd.Parameters.AddWithValue("@RID", rid);
 
                 await conn.OpenAsync();
-                using (var rdr = await cmd.ExecuteReaderAsync())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    if (await rdr.ReadAsync())
+                    while (await reader.ReadAsync())
                     {
-                        return new MasterDataDto
+                        var dto = new MasterDataDto
                         {
-                            RID = rdr.GetInt32(rdr.GetOrdinal("RID")),
-                            InitiatorEmpId = rdr.GetInt32(rdr.GetOrdinal("InitiatorEmpId")),
-                            TeamId = rdr.GetInt32(rdr.GetOrdinal("TeamID")),
-                            QuarterId = rdr.GetInt32(rdr.GetOrdinal("QID")),
-                            BudgetId = rdr.GetInt32(rdr.GetOrdinal("BID")),
-                            DCPoints = rdr.GetInt32(rdr.GetOrdinal("DCPoints")),
-                            DAPoints = rdr.GetInt32(rdr.GetOrdinal("DAPoints")),
-                            Choice = rdr.GetInt32(rdr.GetOrdinal("Choice")),
-                            CreatedOn = rdr.IsDBNull(rdr.GetOrdinal("CreatedOn")) ? DateTime.MinValue : rdr.GetDateTime(rdr.GetOrdinal("CreatedOn"))
+                            RID = reader.GetInt32(reader.GetOrdinal("RID")),
+                            InstanceID = reader.GetInt64(reader.GetOrdinal("InstanceID")),
+
+                            // 🔥 Fix: read InitiatorMemID from DB
+                            InitiatorMemID = reader.GetInt32(reader.GetOrdinal("InitiatorMemID")),
+
+                            WFStatus = reader.GetInt32(reader.GetOrdinal("WFStatus")),
+                            TeamID = reader.GetInt32(reader.GetOrdinal("TeamID")),
+                            Quarter = reader.GetInt32(reader.GetOrdinal("Quarter")),
+                            Budget = reader.GetDecimal(reader.GetOrdinal("Budget")),
+                            DCPoints = reader.GetDecimal(reader.GetOrdinal("DCPoints")),
+                            DAPoints = reader.GetDecimal(reader.GetOrdinal("DAPoints")),
+                            EntryDate = reader.GetDateTime(reader.GetOrdinal("EntryDate")),
+                            IsActive = reader.GetBoolean(reader.GetOrdinal("IsActive"))
                         };
+
+                        results.Add(dto);
                     }
                 }
             }
 
-            return null;
+            return results;
         }
+
     }
 }

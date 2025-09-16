@@ -55,13 +55,19 @@ namespace DMTDatapointAllocation.Models
     public class MasterDataDto
     {
         public int RID { get; set; }
-        public int InitiatorEmpId { get; set; }
-        public int TeamId { get; set; }
-        public int QuarterId { get; set; }
-        public int BudgetId { get; set; }
-        public int DCPoints { get; set; }
-        public int DAPoints { get; set; }
-        public int Choice { get; set; }
-        public DateTime CreatedOn { get; set; }
+        public long InstanceID { get; set; }
+
+        // 🔥 Match DB column InitiatorMemID
+        public int InitiatorMemID { get; set; }
+
+        public int WFStatus { get; set; }
+        public int TeamID { get; set; }
+        public int Quarter { get; set; }
+        public decimal Budget { get; set; }
+        public decimal DCPoints { get; set; }
+        public decimal DAPoints { get; set; }
+        public DateTime EntryDate { get; set; }
+        public bool IsActive { get; set; }
     }
+
 }

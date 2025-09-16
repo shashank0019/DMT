@@ -48,9 +48,10 @@ namespace DMTDatapointAllocation.BUSINESSLOGIC
             };
         }
 
-        public Task<MasterDataDto> GetMasterDataAsync(int rid)
+        public async Task<List<MasterDataDto>> GetMasterDataAsync(int choice, int rid)
         {
-            return _dataAccess.GetMasterDataAsync(rid);
+            return await _dataAccess.GetMasterDataAsync(choice, rid);
         }
+
     }
 }

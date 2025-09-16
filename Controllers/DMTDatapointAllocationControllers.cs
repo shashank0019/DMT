@@ -58,13 +58,19 @@ namespace DMTDatapointAllocation.Controllers
             }
         }
 
-        [HttpGet("master/{rid}")]
-        public async Task<IActionResult> GetMasterData(int rid)
+        [HttpGet("masterdata/{choice}/{rid}")]
+        public async Task<IActionResult> GetMasterData(int choice, int rid)
         {
-            if (rid <= 0) return BadRequest("Invalid RID");
-            var master = await _biz.GetMasterDataAsync(rid);
-            if (master == null) return NotFound();
-            return Ok(master);
+            if (choice <= 0 || rid <= 0)
+                return BadRequest("Invalid choice or RID");
+
+            var data = await _biz.GetMasterDataAsync(choice, rid);
+
+            if (data == null || data.Count == 0)
+                return NotFound();
+
+            return Ok(data);
         }
+
     }
 }
