@@ -57,8 +57,8 @@ namespace DMTDatapointAllocation.Models
         public int RID { get; set; }
         public long InstanceID { get; set; }
 
-        // 🔥 Match DB column InitiatorMemID
-        public int InitiatorMemID { get; set; }
+        // ✅ Fix: Match DB column "InitiatorMEmplID"
+        public int InitiatorMEmplID { get; set; }
 
         public int WFStatus { get; set; }
         public int TeamID { get; set; }
@@ -69,5 +69,6 @@ namespace DMTDatapointAllocation.Models
         public DateTime EntryDate { get; set; }
         public bool IsActive { get; set; }
     }
+
 
 }

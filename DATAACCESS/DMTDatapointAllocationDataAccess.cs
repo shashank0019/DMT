@@ -149,6 +149,7 @@ namespace DMTDatapointAllocation.DATAACCESS
                 cmd.Parameters.AddWithValue("@RID", rid);
 
                 await conn.OpenAsync();
+
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
@@ -158,8 +159,8 @@ namespace DMTDatapointAllocation.DATAACCESS
                             RID = reader.GetInt32(reader.GetOrdinal("RID")),
                             InstanceID = reader.GetInt64(reader.GetOrdinal("InstanceID")),
 
-                            // 🔥 Fix: read InitiatorMemID from DB
-                            InitiatorMemID = reader.GetInt32(reader.GetOrdinal("InitiatorMemID")),
+                            // ✅ Corrected: matches DB column exactly from SP
+                            InitiatorMEmplID = reader.GetInt32(reader.GetOrdinal("InitiatorMEmplID")),
 
                             WFStatus = reader.GetInt32(reader.GetOrdinal("WFStatus")),
                             TeamID = reader.GetInt32(reader.GetOrdinal("TeamID")),
@@ -178,6 +179,7 @@ namespace DMTDatapointAllocation.DATAACCESS
 
             return results;
         }
+
 
     }
 }

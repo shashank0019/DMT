@@ -58,16 +58,12 @@ namespace DMTDatapointAllocation.Controllers
             }
         }
 
-        [HttpGet("masterdata/{choice}/{rid}")]
-        public async Task<IActionResult> GetMasterData(int choice, int rid)
+        [HttpGet("{rid}")]
+        public async Task<IActionResult> Get(int rid)
         {
-            if (choice <= 0 || rid <= 0)
-                return BadRequest("Invalid choice or RID");
-
-            var data = await _biz.GetMasterDataAsync(choice, rid);
-
-            if (data == null || data.Count == 0)
-                return NotFound();
+            var data = await _biz.GetMasterDataAsync(1, rid); // Choice = 1
+            if (data == null || !data.Any())
+                return NotFound(new { Message = "No active data found." });
 
             return Ok(data);
         }

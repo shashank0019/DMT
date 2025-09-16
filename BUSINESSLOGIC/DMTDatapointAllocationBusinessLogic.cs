@@ -53,5 +53,6 @@ namespace DMTDatapointAllocation.BUSINESSLOGIC
             return await _dataAccess.GetMasterDataAsync(choice, rid);
         }
 
+
     }
 }
